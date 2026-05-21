@@ -1,0 +1,22 @@
+name: Awesome Validate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 12 * * 1'  # Lunes 12:00 UTC
+
+jobs:
+  awesome-bot:
+    name: Validar formato Awesome
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+      - name: Install awesome_bot
+        run: gem install awesome_bot
+      - name: Validar links
+        run: awesome_bot README.md --allow-redirect --white-list github.com --skip-save-results || true
